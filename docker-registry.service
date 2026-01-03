@@ -1,0 +1,14 @@
+[Unit]
+Description=Docker Registry
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=simple
+Restart=on-failure
+ExecStart=/bin/bash -c 'cd "$(dirname "$(readlink -f /etc/systemd/system/docker-registry.service)")" && docker compose up'
+ExecStop=/bin/bash -c 'cd "$(dirname "$(readlink -f /etc/systemd/system/docker-registry.service)")" && docker compose down'
+ExecReload=/bin/bash -c 'cd "$(dirname "$(readlink -f /etc/systemd/system/docker-registry.service)")" && docker compose up --force-recreate'
+
+[Install]
+WantedBy=multi-user.target
